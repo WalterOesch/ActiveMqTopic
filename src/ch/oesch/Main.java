@@ -16,7 +16,12 @@ import javax.jms.TextMessage;
 public class Main {
 
     public static void main(String[] args) {
-        thread(new HelloWorldProducer(), false);
+        //thread(new HelloWorldProducer(), false);
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         thread(new HelloWorldConsumer(), false);
     }
 
@@ -33,7 +38,8 @@ public class Main {
         public void run() {
             try {
                 // Create a ConnectionFactory
-                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+                // ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
                 // Create a Connection
                 Connection connection = connectionFactory.createConnection();
@@ -43,7 +49,8 @@ public class Main {
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
                 // Create the destination (Topic or Queue)
-                Destination destination = session.createQueue("TEST.FOO");
+                //Destination destination = session.createQueue("TEST.FOO");
+                Destination destination = session.createQueue("WalterQueue");
 
                 // Create a MessageProducer from the Session to the Topic or Queue
                 MessageProducer producer = session.createProducer(destination);
@@ -73,7 +80,8 @@ public class Main {
             try {
 
                 // Create a ConnectionFactory
-                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+                //ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("vm://localhost");
+                ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
                 // Create a Connection
                 Connection connection = connectionFactory.createConnection();
@@ -85,7 +93,8 @@ public class Main {
                 Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
                 // Create the destination (Topic or Queue)
-                Destination destination = session.createQueue("TEST.FOO");
+                //Destination destination = session.createQueue("TEST.FOO");
+                Destination destination = session.createQueue("WalterQueue");
 
                 // Create a MessageConsumer from the Session to the Topic or Queue
                 MessageConsumer consumer = session.createConsumer(destination);
